@@ -29,8 +29,16 @@ const dbConnection = async function (fastify, opts) {
   /** @type {DatabaseConfig} */
   const dbConfig = opts.dbConfig
   console.log('Init database connections for ' + dbConfig.name)
-  // Missing type definition on FastifyInstance?
-  fastify.onClose(async () => {
+  /**
+   * Fastify documentation:
+   * https://www.fastify.io/docs/latest/Hooks/#onclose
+   * 
+   * Triggered when fastify.close() is invoked to stop the server.
+   * It is useful when plugins need a "shutdown" event, for example,
+   * to close an open connection to a database.
+   * The first argument is the Fastify instance, the second one the done callback.
+   */
+  fastify.addHook('onClose', async () => {
     console.log(
       `Closing ${dbConfig.name} database... it takes ${dbConfig.timeout} seconds!`
     )
