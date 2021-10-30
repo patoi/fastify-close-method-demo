@@ -1,5 +1,5 @@
 /**
- * Demonstration of async onClose() handling on fastify plugin.
+ * Demonstration of async fastify.close() handling.
  */
 import Fastify from 'fastify'
 
