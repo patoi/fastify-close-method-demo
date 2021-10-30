@@ -4,6 +4,9 @@
   "type": "module",
   "main": "server/index.js",
   "license": "MIT",
+  "scripts": {
+    "start": "node server"
+  },
   "dependencies": {
     "fastify": "^3.22.1"
   }

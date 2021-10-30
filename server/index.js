@@ -91,8 +91,3 @@ process.on('SIGTERM', signal => {
   console.log('Server caught ' + signal)
   shutdown(0)
 })
-
-process.on('SIGUSR1', signal => {
-  console.log('Server caught ' + signal)
-  shutdown(0)
-})
