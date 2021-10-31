@@ -1,5 +1,7 @@
 /**
  * Demonstration of async fastify.close() handling.
+ * Customize the code by isAsync constant in the shutdown() function.
+ * const isAsync = false|true
  */
 import Fastify from 'fastify'
 
@@ -11,14 +13,24 @@ import Fastify from 'fastify'
 
 /**
  * Sleeping for seconds
- * @param {number} s sleep time in seconds
+ * @param {number} seconds sleep time in seconds
  * @returns {Promise}
  */
-async function sleep(s) {
-  return new Promise(resolve => setTimeout(resolve, s * 1000))
+async function sleep(seconds) {
+  return new Promise(resolve => setTimeout(resolve, seconds * 1000))
 }
 
 const fastify = Fastify({})
+
+/**
+ * Application level onClose.
+ *
+ * if const isAsync = false, then you will never see this log.
+ */
+fastify.addHook('onClose', async () => {
+  await sleep(1)
+  console.log("Application' onClose hook ran.")
+})
 
 /**
  * DB Connection handler.
@@ -32,7 +44,7 @@ const dbConnection = async function (fastify, opts) {
   /**
    * Fastify documentation:
    * https://www.fastify.io/docs/latest/Hooks/#onclose
-   * 
+   *
    * Triggered when fastify.close() is invoked to stop the server.
    * It is useful when plugins need a "shutdown" event, for example,
    * to close an open connection to a database.
